@@ -69,15 +69,15 @@ return [
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
-            'host' => env('DB_HOST', '192.168.202.102'),
+            'host' => env('DB_HOST', 'WDPVSPC0002\IRREVALDY'),
             'port' => env('DB_PORT', '1433'),
-            'database' => env('DB_DATABASE', 'DbWDTMS'),
+            'database' => env('DB_DATABASE', 'DbWDGatewayIDM'),
             'username' => env('DB_USERNAME', 'sa'),
             'password' => env('DB_PASSWORD', 'pvs1909~'),
             'charset' => 'utf8',
             'prefix' => '',
         ],
-		
+
 		'sqlsrv2' => [
             'driver' => 'sqlsrv',
             'host' => env('DB_HOST2', '127.0.0.1'),

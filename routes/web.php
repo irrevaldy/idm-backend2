@@ -15,7 +15,7 @@
 Route::post('/login', ['uses' => 'login\loginController@login']);
 //Route::get('/login', ['uses' => 'login\loginController@login']);
 Route::post('/logout/{username}', ['uses' => 'login\loginController@logout']);
-Route::get('/logout/{username}', ['uses' => 'login\loginController@logout']);
+//Route::get('/logout/{username}', ['uses' => 'login\loginController@logout']);
 //getAPItoken
 Route::get('/user/{username}', ['uses' => 'UserController@getUserToken']);
 
@@ -31,10 +31,6 @@ Route::post('/search_transaction', ['uses' => 'searchTransactionController@searc
 /* Summary transaction */
 Route::post('/summary_transaction', ['uses' => 'summaryTransactionController@summaryTransaction']);
 Route::post('/summary_response_code', ['uses' => 'summaryTransactionController@summaryResponseCode']);
-
-//coba
-Route::get('/test', ['uses' => 'testingController@test']);
-
 
 //menu
 // Route::get('/menu/main/{groupid}/{token}',['uses' => 'MenuController@getMenuMain']);

@@ -32,23 +32,27 @@ class loginController extends Controller
 
 				$api_token = sha1(date('YmdHis').$username.explode('.',microtime(true))[1]);
 
-				session(['username' => $username], ['token' => $api_token]);
+				//session(['username' => $username], ['token' => $api_token]);
 				$set_token = DB::statement("[spVIDM_setAPIToken] '$username', '$api_token' ");
 
-        $addData = DB::statement("[spVIDM_getMerchBranchData] '$username'");
-        $merchant = $addData[0]['merch_id'];
-         $branch = $addData[0]['branch_code'];
-        // //session(['merchant' => $merchant], ['branch' => $branch]);
-        $summary = DB::statement("[spVIDM_MonitoringSum] '7','$merchant','$branch'");
+        $date = '7';
+        $merchant = $data[0]['merch_id'];
+        $branch = $data[0]['branch_code'];
+
+        $summary = DB::select("[spVIDM_MonitoringSum] '$date', '$merchant', '$branch' ");
+
+        $summary = json_encode($summary);
+        $summary = json_decode($summary, true);
 
 				$user_data['name'] = $data[0]['name'];
 				$user_data['username'] = $data[0]['username'];
 				$user_data['group_id'] = $data[0]['GROUPID'];
-				$user_data['token'] = $api_token;
+				$user_data['token'] =  $api_token;
+
         $user_data['total_edc'] = $summary[0]['Total EDC'];
         $user_data['total_active'] = $summary[0]['Total Active'];
-         $user_data['total_non_active'] = $summary[0]['Total Non Active'];
-         $user_data['total_active_transaction'] = $summary[0]['Total Active Transaction'];
+        $user_data['total_not_active'] = $summary[0]['Total Not Active'];
+        $user_data['total_active_transaction'] = $summary[0]['Total Active Transaction'];
 
 				$res['success'] = true;
 				$res['result'] = 'Login Success !';

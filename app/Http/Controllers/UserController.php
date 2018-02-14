@@ -26,11 +26,6 @@ class UserController extends Controller
     }
   }
 
-  public function getUser()
-  {
-    return "user";
-  }
-
   public function getUserToken(Request $request)
   {
     $username = $request->username;
