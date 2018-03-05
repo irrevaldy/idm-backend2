@@ -44,10 +44,46 @@ class loginController extends Controller
         $summary = json_encode($summary);
         $summary = json_decode($summary, true);
 
-				$user_data['name'] = $data[0]['name'];
+        $user_data['user_id'] = $data[0]['user_id'];
 				$user_data['username'] = $data[0]['username'];
+				$user_data['name'] = $data[0]['name'];
+        $user_data['FID'] = $data[0]['FID'];
 				$user_data['group_id'] = $data[0]['GROUPID'];
 				$user_data['token'] =  $api_token;
+        $user_data['merch_id'] = $data[0]['merch_id'];
+        $merch_id = $data[0]['merch_id'];
+        $FID = $data[0]['FID'];
+
+        $merchant_call = DB::select("[spVIDM_GetMerchant] '$merch_id'");
+
+        $merchant_call = json_encode($merchant_call);
+        $merchant_call = json_decode($merchant_call, true);
+
+        $FID_call = DB::select("[spVIDM_GetFID] '$FID'");
+
+        $FID_call = json_encode($FID_call);
+        $FID_call = json_decode($FID_call, true);
+
+        if($user_data['FID'] == '1909')
+        {
+      		$user_data['FCODE'] = '1909';
+      		$user_data['FNAME'] = "Wirecard";
+      	}
+        else if($user_data['FID'] == '99')
+        {
+      		$user_data['FCODE'] = 'merchant';
+      		$user_data['FNAME'] = $merchant_call[0]['FMERCHNAME'];
+      	}
+        else if(isset($user_data['FID'])) {
+      		$user_data['FCODE'] = $FID_call[0]['FCODE'];
+      		$user_data['FNAME'] = $FID_call[0]['FNAME'];
+      	}
+        else
+        {
+      		$user_data['FCODE'] = 'pvs1909';
+      		$user_data['FNAME'] = 'Wirecard';
+      	}
+
 
         $user_data['total_edc'] = $summary[0]['Total EDC'];
         $user_data['total_active'] = $summary[0]['Total Active'];
