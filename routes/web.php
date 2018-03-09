@@ -39,3 +39,13 @@ Route::post('/summary_response_code', ['uses' => 'summaryTransactionController@s
 //menu
 Route::get('/menu/main/{group_id}/{api_token}',['uses' => 'MenuController@getMenuMain']);
 Route::get('/menu/regular/{group_id}/{api_token}',['uses' => 'MenuController@getMenuRegular']);
+
+Route::post('/tcash/setup', ['uses' => 'tcashSetupController@setTcashLimit']);
+
+Route::post('/corporate', ['uses' => 'globalController@getCorporateData']);
+Route::post('/merchant', ['uses' => 'globalController@getMerchantData']);
+
+Route::post('/users', ['uses' => 'globalController@getUsersData']);
+Route::post('/groups', ['uses' => 'globalController@getGroupsData']);
+
+Route::post('/audit_trail', ['uses' => 'auditTrailController@getAuditTrail']);

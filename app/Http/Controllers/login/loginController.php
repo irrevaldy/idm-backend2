@@ -49,6 +49,8 @@ class loginController extends Controller
 				$user_data['name'] = $data[0]['name'];
         $user_data['FID'] = $data[0]['FID'];
 				$user_data['group_id'] = $data[0]['GROUPID'];
+        $user_data['groupName'] = $data[0]['groupName'];
+        $user_data['branch_code'] = $data[0]['branch_code'];
 				$user_data['token'] =  $api_token;
         $user_data['merch_id'] = $data[0]['merch_id'];
         $merch_id = $data[0]['merch_id'];
