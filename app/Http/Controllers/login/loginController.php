@@ -23,6 +23,9 @@ class loginController extends Controller
   		$password = $request->password;
 
 		try{
+      date_default_timezone_set('Asia/Jakarta');
+      $now = date("YmdHis");
+
 			$data = DB::select("[spVIDM_login] '$username', '$password'");
 
 			$data = json_encode($data);
@@ -86,11 +89,12 @@ class loginController extends Controller
       		$user_data['FNAME'] = 'Wirecard';
       	}
 
-
         $user_data['total_edc'] = $summary[0]['Total EDC'];
         $user_data['total_active'] = $summary[0]['Total Active'];
         $user_data['total_not_active'] = $summary[0]['Total Not Active'];
         $user_data['total_active_transaction'] = $summary[0]['Total Active Transaction'];
+
+        $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '2', '$user_data[user_id]', '$user_data[username]', '$user_data[name]', $now, 'Login idm laravel'");
 
 				$res['success'] = true;
 				$res['result'] = 'Login Success !';
@@ -112,8 +116,17 @@ class loginController extends Controller
 	}
 
 	public function logout(Request $request, $username) {
-		session()->flush();
-		$set_token = DB::statement(" [spVIDM_setAPIToken] '$username', '' ");
+    date_default_timezone_set('Asia/Jakarta');
+    $now = date("YmdHis");
+
+    $user_id = $request->user_id;
+    $username = $request->username;
+    $name = $request->name;
+
+    $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '3', '$user_id' , '$username ', '$name', $now, 'Logout idm laravel'");
+
+    session()->flush();
+    $set_token = DB::statement(" [spVIDM_setAPIToken] '$username', '' ");
 
 		$res['success'] = true;
 		$res['result'] = 'Logout success';
