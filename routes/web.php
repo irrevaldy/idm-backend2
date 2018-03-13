@@ -28,6 +28,10 @@ Route::get('/card_data', ['uses' => 'globalController@getCardData']);
 /* Search transaction */
 Route::post('/search_transaction', ['uses' => 'searchTransactionController@search']);
 
+/* Transaction Report */
+Route::post('transaction_report', ['uses' => 'transactionReportController@insertAuditTrail']);
+Route::post('transaction_report_financial',['uses' => 'transactionReportFinancialController@insertAuditTrail']);
+
 /* Summary transaction */
 Route::post('/summary_transaction', ['uses' => 'summaryTransactionController@summaryTransaction']);
 Route::post('/summary_response_code', ['uses' => 'summaryTransactionController@summaryResponseCode']);
