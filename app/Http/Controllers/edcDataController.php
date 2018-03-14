@@ -65,19 +65,42 @@ class edcDataController extends Controller
       $data = json_encode($data);
       $data = json_decode($data, true);
 
-      if( count($data) > 0)
-      {
-        $username = 'exist';
-      }
-      else
-      {
-        $username = 'not';
-      }
 
       $res['success'] = true;
       $res['total'] = count($data);
       $res['result'] = $data;
-      
+
+      return response($res);
+    }
+    catch(QueryException $ex)
+    {
+      $res['success'] = false;
+      $res['result'] = 'Query Exception.. Please Check Database!';
+
+      return response($res);
+    }
+  }
+
+  public function deleteSN(Request $request)
+  {
+    try
+    {
+      $username = $request->username;
+
+      $data = DB::statement("[spVIDM_deleteSN_EDC] '$username' ");
+
+      if($data)
+      {
+        $result = 'sukses';
+      }
+      else
+      {
+        $result = 'gagal';
+      }
+
+      $res['success'] = true;
+      $res['status'] = $result;
+
       return response($res);
     }
     catch(QueryException $ex)
