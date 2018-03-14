@@ -111,4 +111,38 @@ class edcDataController extends Controller
       return response($res);
     }
   }
+
+  public function uploadEdc(Request $request)
+  {
+    try
+    {
+      $corporate = $request->corporate;
+      $merchant = $request->merchant;
+      $file = $request->file
+
+
+      $data = DB::statement("[spVIDM_deleteSN_EDC] '$username' ");
+
+      if($data)
+      {
+        $result = 'sukses';
+      }
+      else
+      {
+        $result = 'gagal';
+      }
+
+      $res['success'] = true;
+      $res['status'] = $result;
+
+      return response($res);
+    }
+    catch(QueryException $ex)
+    {
+      $res['success'] = false;
+      $res['result'] = 'Query Exception.. Please Check Database!';
+
+      return response($res);
+    }
+  }
 }

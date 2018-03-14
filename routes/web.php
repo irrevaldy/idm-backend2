@@ -57,3 +57,4 @@ Route::post('/audit_trail', ['uses' => 'auditTrailController@getAuditTrail']);
 Route::post('/edc_data/checkSN', ['uses' => 'edcDataController@checkSN']);
 Route::post('/edc_data/getSN', ['uses' => 'edcDataController@getSN']);
 Route::post('/edc_data/deleteSN', ['uses' => 'edcDataController@deleteSN']);
+Route::post('/edc_data/upload_edc', ['uses' => 'edcDataController@uploadEdc']);
