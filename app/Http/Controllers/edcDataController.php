@@ -191,13 +191,17 @@ class edcDataController extends Controller
       //body row
       for ($row = 2; $row <= $highestRow; ++ $row) {
 
-      foreach ($indexExcel as $key => $value) {
-        $cell = $worksheet->getCellByColumnAndRow($value, $row);
-        $mid = $cell->getValue();
-        //$dataType = PHPExcel_Cell_DataType::dataTypeForValue($mid);
-        $bodyExcel[][$row] = $mid;
+        $array = array();
 
-      }
+        foreach ($indexExcel as $key => $value) {
+          $cell = $worksheet->getCellByColumnAndRow($value, $row);
+          $mid = $cell->getValue();
+          //$dataType = PHPExcel_Cell_DataType::dataTypeForValue($mid);
+
+            $array[$value] = $mid;
+        }
+
+      $bodyExcel[] = $array;
     }
 
       $res['success'] = true;
