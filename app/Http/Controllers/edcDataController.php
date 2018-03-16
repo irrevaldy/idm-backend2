@@ -1,15 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise;
-use Session;
-use Exception;
+
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 
 class edcDataController extends Controller
 {
@@ -118,9 +120,9 @@ class edcDataController extends Controller
     {
       $corporate = $request->corporate;
       $merchant = $request->merchant;
-      $file = $request->file
+      $storage_path = $request->storage_path;
 
-
+      /*
       $data = DB::statement("[spVIDM_deleteSN_EDC] '$username' ");
 
       if($data)
@@ -128,12 +130,81 @@ class edcDataController extends Controller
         $result = 'sukses';
       }
       else
-      {
-        $result = 'gagal';
+
+      */
+
+      $objPHPSpreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($storage_path);
+      $worksheet = $objPHPSpreadsheet->setActiveSheetIndex(0);
+      $worksheetTitle     = $worksheet->getTitle();
+      $highestRow         = $worksheet->getHighestRow(); // e.g. 10
+      $highestRow_count = $highestRow -1;
+      $highestColumn      = $worksheet->getHighestColumn(); // e.g 'F'
+      $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
+      $nrColumns = ord($highestColumn) - 64;
+
+      $midList = array("Serial Number", "TID MDR REGULER", "MID MDR REGULER", "TID MDR POWERBUY 3", "MID MDR POWERBUY 3", "TID MDR POWERBUY 6", "MID MDR POWERBUY 6", "TID MDR POWERBUY 12", "MID MDR POWERBUY 12", "TID MDR PREPAID", "MID MDR PREPAID", "TID BNI", "MID BNI", "TID BRI", "MID BRI", "TID TCASH", "MID TCASH", "TID CIMB", "MID CIMB"); //label for view
+
+      $data = array("corporate"=>"$corporate",
+                    "merchant"=>"$merchant",
+                    "highestRow_count" => $highestRow_count,
+                  "storage_path" => $storage_path);
+
+      $headerExcel = array();
+      $headerExcel2 = array();
+      $indexExcel = array();
+      $indexExcel2 = array();
+      $bodyExcel = array();
+      $bodyExcel2 = array();
+
+
+      //header row
+      $row = 1;
+      $col = 0;
+
+      for ($col = 0; $col <= $highestColumnIndex; ++ $col) {
+        $cell = $worksheet->getCellByColumnAndRow($col, $row);
+        $val = $cell->getValue();
+        $headerExcel[] = $val;
       }
 
+      foreach ($midList as $key => $value) {
+        if(in_array($value, $headerExcel)) {
+          $indexExcel[] = array_search($value, $headerExcel);
+        }
+      }
+
+      $row = 1;
+      $col = 0;
+
+      //$cell = $worksheet->getCellByColumnAndRow($col, $row);
+      //$sn = $cell->getValue();
+      //$dataType = \PhpOffice\PhpSpreadsheet\Cell_DataType::dataTypeForValue($sn);
+
+      foreach ($indexExcel as $key => $value) {
+        $cell = $worksheet->getCellByColumnAndRow($value, $row);
+        $header = $cell->getValue();
+        //$dataType = \PhpOffice\PhpSpreadsheet\Cell_DataType::dataTypeForValue($header);
+        $headerExcel2[] = $header;
+      }
+      $maxCol = count($indexExcel) + 1;
+
+      //body row
+      for ($row = 2; $row <= $highestRow; ++ $row) {
+
+      foreach ($indexExcel as $key => $value) {
+        $cell = $worksheet->getCellByColumnAndRow($value, $row);
+        $mid = $cell->getValue();
+        //$dataType = PHPExcel_Cell_DataType::dataTypeForValue($mid);
+        $bodyExcel[][$row] = $mid;
+
+      }
+    }
+
       $res['success'] = true;
-      $res['status'] = $result;
+      $res['result'] = $data;
+      $res['header'] = $headerExcel;
+      $res['header2'] = $headerExcel2;
+      $res['body'] = $bodyExcel;
 
       return response($res);
     }
