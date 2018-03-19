@@ -161,7 +161,7 @@ class edcDataController extends Controller
       $row = 1;
       $col = 0;
 
-      for ($col = 0; $col <= $highestColumnIndex; ++ $col) {
+      for ($col = 0; $col <= $highestColumnIndex; $col++) {
         $cell = $worksheet->getCellByColumnAndRow($col, $row);
         $val = $cell->getValue();
         $headerExcel[] = $val;
@@ -186,7 +186,7 @@ class edcDataController extends Controller
         //$dataType = \PhpOffice\PhpSpreadsheet\Cell_DataType::dataTypeForValue($header);
         $headerExcel2[] = $header;
       }
-      $maxCol = count($indexExcel) + 1;
+
 
       //body row
       for ($row = 2; $row <= $highestRow; ++ $row) {
