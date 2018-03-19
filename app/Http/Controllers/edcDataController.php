@@ -161,7 +161,7 @@ class edcDataController extends Controller
       $row = 1;
       $col = 0;
 
-      for ($col = 0; $col <= $highestColumnIndex; $col++) {
+      for ($col = 0; $col <= $highestColumnIndex; ++ $col) {
         $cell = $worksheet->getCellByColumnAndRow($col, $row);
         $val = $cell->getValue();
         $headerExcel[] = $val;
@@ -169,12 +169,20 @@ class edcDataController extends Controller
 
       foreach ($midList as $key => $value) {
         if(in_array($value, $headerExcel)) {
-          $indexExcel[] = array_search($value, $headerExcel);
+          $x = array_search($value, $headerExcel);
+          if($x == 0)
+          {
+            $x = 26;
+          }
+          $indexExcel[] = $x;
         }
       }
 
       $row = 1;
       $col = 0;
+
+      $cell = $worksheet->getCellByColumnAndRow($col, $row);
+      $sn = $cell->getValue();
 
       //$cell = $worksheet->getCellByColumnAndRow($col, $row);
       //$sn = $cell->getValue();
@@ -187,18 +195,45 @@ class edcDataController extends Controller
         $headerExcel2[] = $header;
       }
 
+      $maxCol = count($indexExcel) + 1;
 
       //body row
       for ($row = 2; $row <= $highestRow; ++ $row) {
-
+        $col = 0;
         $array = array();
+
+        $cell = $worksheet->getCellByColumnAndRow($indexExcel[0], $row);
+        $sn = $cell->getValue();
+
+        $datas = DB::select("[spVIDM_selectSN_EDC] '$sn' ");
+
+        $datas = json_encode($datas);
+        $datas = json_decode($datas, true);
+
+        if($sn == NULL || $sn == '')
+        {
+          $sn_status = 'SN is empty. Broken Data.';
+        }
+        elseif(count($datas) > 0)
+        {
+          $sn_status = 'SN has been registered';
+        }
+        else
+        {
+          $sn_status = 'OK';
+        }
 
         foreach ($indexExcel as $key => $value) {
           $cell = $worksheet->getCellByColumnAndRow($value, $row);
           $mid = $cell->getValue();
+          if($mid == null)
+          {
+            $mid = '';
+          }
           //$dataType = PHPExcel_Cell_DataType::dataTypeForValue($mid);
-
-            $array[$value] = $mid;
+          $array[$value] = $mid;
+          $array['status'] = $sn_status;
+          //array_push($array , "status" => $sn);
         }
 
       $bodyExcel[] = $array;
@@ -208,6 +243,7 @@ class edcDataController extends Controller
       $res['result'] = $data;
       $res['header'] = $headerExcel;
       $res['header2'] = $headerExcel2;
+      //$res['index'] = $indexExcel;
       $res['body'] = $bodyExcel;
 
       return response($res);
