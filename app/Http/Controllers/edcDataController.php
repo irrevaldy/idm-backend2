@@ -256,4 +256,142 @@ class edcDataController extends Controller
       return response($res);
     }
   }
+
+  public function activateEdc(Request $request)
+  {
+    date_default_timezone_set('Asia/Jakarta');
+    $now = date("Ymdhis");
+    $merchant = $request->merchant;
+    $storage_path = $request->storage_path;
+    $user_id = $request->user_id;
+    $username = $request->username;
+    $name = $request->name;
+
+    $midList = array("Serial Number", "TID MDR REGULER", "MID MDR REGULER", "TID MDR POWERBUY 3", "MID MDR POWERBUY 3", "TID MDR POWERBUY 6", "MID MDR POWERBUY 6", "TID MDR POWERBUY 12", "MID MDR POWERBUY 12", "TID MDR PREPAID", "MID MDR PREPAID", "TID BNI", "MID BNI", "TID BRI", "MID BRI", "TID TCASH", "MID TCASH", "TID CIMB", "MID CIMB"); //label for view
+
+    $objPHPSpreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($storage_path);
+    $worksheet = $objPHPSpreadsheet->setActiveSheetIndex(0);
+    $worksheetTitle     = $worksheet->getTitle();
+    $highestRow         = $worksheet->getHighestRow(); // e.g. 10
+    $highestRow_count = $highestRow -1;
+    $highestColumn      = $worksheet->getHighestColumn(); // e.g 'F'
+    $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
+    $nrColumns = ord($highestColumn) - 64;
+
+    $headerExcel = array();
+    $indexExcel = array();
+
+    $row = 1;
+    $col = 0;
+
+    for ($col = 0; $col <= $highestColumnIndex; ++ $col) {
+      $cell = $worksheet->getCellByColumnAndRow($col, $row);
+      $val = $cell->getValue();
+      $headerExcel[] = $val;
+    }
+
+    foreach ($midList as $key => $value) {
+      if(in_array($value, $headerExcel)) {
+        $x = array_search($value, $headerExcel);
+        if($x == 0)
+        {
+          $x = 26;
+        }
+        $indexExcel[] = $x;
+      }
+    }
+
+    $maxKey = sizeof($indexExcel) - 1;
+
+    $no = 1;
+    for ($row = 2; $row <= $highestRow; ++ $row)
+    {
+      $cell = $worksheet->getCellByColumnAndRow($col, $row);
+      $sn = $cell->getValue();
+
+      $midFull = "";
+      $midCount = 0;
+      foreach ($indexExcel as $key => $value)
+      {
+        $cell = $worksheet->getCellByColumnAndRow($value, $row);
+        $val = $cell->getValue();
+
+        if($key == 0)
+        {
+          $sn = $val;
+        }
+        else
+        {
+          $midCount += 1;
+          if($midCount == 1)
+          {
+            //tid
+            $tid = $val;
+            while(strlen($tid) < 8)
+            {
+              $tid = "0".$tid;
+            }
+          }
+          else if($midCount == 2)
+          {
+            //mid
+            $mid = $val;
+            while(strlen($mid) < 15)
+            {
+              $mid = "0".$mid;
+            }
+            $mid = $tid.$mid;
+          }
+          //another if
+          if($midCount == 2)
+          {
+            if($key == $maxKey)
+            {
+              $midFull = $midFull.$mid;
+              $midCount = 0;
+            }
+            else
+            {
+              $midFull = $midFull.$mid.";";
+              $midCount = 0;
+            }
+          }
+        }
+      }
+
+      try
+      {
+        $datas = DB::select("[spVIDM_selectSN_EDC] '$sn' ");
+
+        $datas = json_encode($datas);
+        $datas = json_decode($datas, true);
+
+        if($sn == NULL || $sn == '')
+        {
+          $sn_status = 'SN is empty. Broken Data.';
+        }
+        elseif(count($datas) > 0)
+        {
+          $queryInsert = DB::statement("[spPortal_regisEdc] 'update', '$merchant', '$sn', '$midFull'");
+        }
+        else
+        {
+          $queryInsert = DB::statement("[spPortal_regisEdc] 'insert', '$merchant', '$sn', '$midFull'");
+        }
+        $res['success'] = true;
+        $res['result'] = 'Add Corporate Success';
+
+        $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '22', '$user_id', '$username', '$name', $now, 'Import SN, filename: $storage_path, merchant ID: $merchant'");
+
+        return response($res);
+      }
+      catch(QueryException $ex)
+      {
+        $res['success'] = false;
+        $res['result'] = 'Add Corporate Failed';
+
+        return response($res);
+      }
+    }
+  }
 }
