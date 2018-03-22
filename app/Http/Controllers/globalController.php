@@ -107,7 +107,8 @@ class globalController extends Controller
 
 	}
 
-  public function getGroupsData(Request $request) {
+  public function getGroupsData(Request $request)
+  {
 
     $FCODE = $request->FCODE;
     $user_id = $request->user_id;
@@ -215,16 +216,14 @@ class globalController extends Controller
           $res['message'] = 'Update Profile Failed';
       	}
       }
-
       return response($res);
     }
     catch(QueryException $ex)
     {
-      $res['status'] = '#ERROR';
-      $res['message'] = 'Query Exception.. Please Check Database!';
+      $res['success'] = '#ERROR';
+      $res['result'] = 'Query Exception.. Please Check Database!';
 
       return response($res);
     }
-
   }
 }
