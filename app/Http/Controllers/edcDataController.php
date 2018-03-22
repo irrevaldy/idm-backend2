@@ -32,17 +32,17 @@ class edcDataController extends Controller
 
       if( count($data) > 0)
       {
-        $username = 'exist';
+        $status = 'exist';
       }
       else
       {
-        $username = 'not';
+        $status = 'not';
       }
 
       $res['success'] = true;
       $res['total'] = count($data);
       $res['result'] = $data;
-      $res['status'] = $username;
+      $res['status'] = $status;
 
 
       return response($res);
