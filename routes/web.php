@@ -61,3 +61,7 @@ Route::post('/edc_data/upload_edc', ['uses' => 'edcDataController@uploadEdc']);
 Route::post('/edc_data/activate_edc', ['uses' => 'edcDataController@activateEdc']);
 
 Route::post('/update_password', ['uses' =>'globalController@updatePassword']);
+
+Route::post('/add_corporate', ['uses' =>'corporateMerchantController@addCorporate']);
+Route::post('/update_corporate', ['uses' =>'corporateMerchantController@updateCorporate']);
+Route::post('/delete_corporate', ['uses' =>'corporateMerchantController@deleteCorporate']);
