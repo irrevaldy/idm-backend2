@@ -77,4 +77,29 @@ class corporateMerchantController extends Controller
       return response($res);
     }
   }
+
+  public function addMerchant(Request $request)
+  {
+    try
+    {
+      $corporateId = $request->corporateId;
+      $merchName = $request->merchName;
+      $file = $request->file;
+      //$date = $request->date;
+
+      $data = DB::statement("[spVIDM_InsertNewMerchant] '$corporateId', '$merchName','$file' ");
+
+      $res['success'] = true;
+      $res['result'] = "Add Merchant Success";
+
+      return response($res);
+    }
+    catch(QueryException $ex)
+    {
+      $res['success'] = false;
+      $res['result'] = 'Add Merchant Failed';
+
+      return response($res);
+    }
+  }
 }

@@ -65,3 +65,6 @@ Route::post('/update_password', ['uses' =>'globalController@updatePassword']);
 Route::post('/add_corporate', ['uses' =>'corporateMerchantController@addCorporate']);
 Route::post('/update_corporate', ['uses' =>'corporateMerchantController@updateCorporate']);
 Route::post('/delete_corporate', ['uses' =>'corporateMerchantController@deleteCorporate']);
+Route::post('/add_merchant', ['uses' =>'corporateMerchantController@addMerchant']);
+Route::post('/update_merchant', ['uses' =>'corporateMerchantController@updateMerchant']);
+Route::post('/delete_merchant', ['uses' =>'corporateMerchantController@deleteMerchant']);
