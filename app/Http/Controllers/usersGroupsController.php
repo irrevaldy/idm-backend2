@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-class corporateMerchantController extends Controller
+class usersGroupsController extends Controller
 {
-  public function addCorporate(Request $request)
+  public function addUsers(Request $request)
   {
     try
     {
@@ -31,7 +30,7 @@ class corporateMerchantController extends Controller
     }
   }
 
-  public function updateCorporate(Request $request)
+  public function updateUsers(Request $request)
   {
     try
     {
@@ -56,7 +55,7 @@ class corporateMerchantController extends Controller
     }
   }
 
-  public function deleteCorporate(Request $request)
+  public function deleteUsers(Request $request)
   {
     try
     {
@@ -78,7 +77,7 @@ class corporateMerchantController extends Controller
     }
   }
 
-  public function addMerchant(Request $request)
+  public function addGroups(Request $request)
   {
     try
     {
@@ -103,7 +102,7 @@ class corporateMerchantController extends Controller
     }
   }
 
-  public function updateMerchant(Request $request)
+  public function updateGroups(Request $request)
   {
     try
     {
@@ -129,7 +128,7 @@ class corporateMerchantController extends Controller
     }
   }
 
-  public function deleteMerchant(Request $request)
+  public function deleteGroups(Request $request)
   {
     try
     {
@@ -150,5 +149,4 @@ class corporateMerchantController extends Controller
       return response($res);
     }
   }
-
 }

@@ -10,6 +10,14 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+//menu
+// Route::get('/menu/main/{groupid}/{token}',['uses' => 'MenuController@getMenuMain']);
+// Route::get('/menu/regular/{groupid}/{token}',['uses' => 'MenuController@getMenuRegular']);
+
+//menu
+Route::get('/menu/main/{group_id}/{api_token}',['uses' => 'MenuController@getMenuMain']);
+Route::get('/menu/regular/{group_id}/{api_token}',['uses' => 'MenuController@getMenuRegular']);
+
 
 /* Login & logout */
 Route::post('/login', ['uses' => 'login\loginController@login']);
@@ -36,23 +44,7 @@ Route::post('transaction_report_financial',['uses' => 'transactionReportFinancia
 Route::post('/summary_transaction', ['uses' => 'summaryTransactionController@summaryTransaction']);
 Route::post('/summary_response_code', ['uses' => 'summaryTransactionController@summaryResponseCode']);
 
-//menu
-// Route::get('/menu/main/{groupid}/{token}',['uses' => 'MenuController@getMenuMain']);
-// Route::get('/menu/regular/{groupid}/{token}',['uses' => 'MenuController@getMenuRegular']);
-
-//menu
-Route::get('/menu/main/{group_id}/{api_token}',['uses' => 'MenuController@getMenuMain']);
-Route::get('/menu/regular/{group_id}/{api_token}',['uses' => 'MenuController@getMenuRegular']);
-
 Route::post('/tcash/setup', ['uses' => 'tcashSetupController@setTcashLimit']);
-
-Route::post('/corporate', ['uses' => 'globalController@getCorporateData']);
-Route::post('/merchant', ['uses' => 'globalController@getMerchantData']);
-
-Route::post('/users', ['uses' => 'globalController@getUsersData']);
-Route::post('/groups', ['uses' => 'globalController@getGroupsData']);
-
-Route::post('/audit_trail', ['uses' => 'auditTrailController@getAuditTrail']);
 
 Route::post('/edc_data/checkSN', ['uses' => 'edcDataController@checkSN']);
 Route::post('/edc_data/getSN', ['uses' => 'edcDataController@getSN']);
@@ -60,11 +52,27 @@ Route::post('/edc_data/deleteSN', ['uses' => 'edcDataController@deleteSN']);
 Route::post('/edc_data/upload_edc', ['uses' => 'edcDataController@uploadEdc']);
 Route::post('/edc_data/activate_edc', ['uses' => 'edcDataController@activateEdc']);
 
-Route::post('/update_password', ['uses' =>'globalController@updatePassword']);
 
+Route::post('/corporate', ['uses' => 'globalController@getCorporateData']);
 Route::post('/add_corporate', ['uses' =>'corporateMerchantController@addCorporate']);
 Route::post('/update_corporate', ['uses' =>'corporateMerchantController@updateCorporate']);
 Route::post('/delete_corporate', ['uses' =>'corporateMerchantController@deleteCorporate']);
+
+Route::post('/merchant', ['uses' => 'globalController@getMerchantData']);
 Route::post('/add_merchant', ['uses' =>'corporateMerchantController@addMerchant']);
 Route::post('/update_merchant', ['uses' =>'corporateMerchantController@updateMerchant']);
 Route::post('/delete_merchant', ['uses' =>'corporateMerchantController@deleteMerchant']);
+
+Route::post('/users', ['uses' => 'globalController@getUsersData']);
+Route::post('/add_users', ['uses' =>'UsersGroupsController@addUsers']);
+Route::post('/update_users', ['uses' =>'UsersGroupsController@updateUsers']);
+Route::post('/delete_users', ['uses' =>'UsersGroupsController@deleteUsers']);
+
+Route::post('/groups', ['uses' => 'globalController@getGroupsData']);
+Route::post('/add_groups', ['uses' =>'UsersGroupsController@addGroups']);
+Route::post('/update_groups', ['uses' =>'UsersGroupsController@updateGroups']);
+Route::post('/delete_groups', ['uses' =>'UsersGroupsController@deleteGroups']);
+
+Route::post('/update_password', ['uses' =>'globalController@updatePassword']);
+
+Route::post('/audit_trail', ['uses' => 'auditTrailController@getAuditTrail']);
