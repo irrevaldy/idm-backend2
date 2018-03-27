@@ -94,10 +94,39 @@ class globalController extends Controller
 
 		try{
 			$data = DB::select("[spPortal_ViewUser] '$FCODE','$user_id'");
+
+      $data = json_encode($data);
+      $data = json_decode($data, true);
+
+      $total = count($data);
+
+      for($i = 0; $i < $total; $i++)
+      {
+        $user_data['FID'] = $data[$i]['FID'];
+        $user_data['merch_id'] = $data[$i]['merch_id'];
+        $merchid = $user_data['merch_id'];
+
+        if($user_data['FID'] == '99')
+        {
+          $merchant_call = DB::select("[spVIDM_GetMerchant] '$merchid'");
+
+          $merchant_call = json_encode($merchant_call);
+          $merchant_call = json_decode($merchant_call, true);
+
+          $data[$i]['FNAME'] = $merchant_call[0]['FMERCHNAME'];
+        }
+        else if($user_data['FID'] == '1909')
+        {
+          $data[$i]['FNAME'] = 'Wirecard';
+        }
+
+      }
+
 			$res['success'] = true;
 			$res['result'] = $data;
 
 			return response($res);
+      //return Response::json($res);
 		} catch(QueryException $ex){
 			$res['success'] = false;
 			$res['result'] = 'Query Exception.. Please Check Database!';
@@ -111,10 +140,45 @@ class globalController extends Controller
   {
 
     $FCODE = $request->FCODE;
-    $user_id = $request->user_id;
+    $group_id = $request->group_id;
 
     try{
-      $data = DB::select("[spPortal_ViewGroup] '$FCODE','$user_id'");
+      $data = DB::select("[spPortal_ViewGroup] '$FCODE','$group_id'");
+      $data = json_encode($data);
+      $data = json_decode($data, true);
+
+      $total = count($data);
+
+      for($i = 0; $i < $total; $i++)
+      {
+        $user_data['FID'] = $data[$i]['FID'];
+        $user_data['merch_id'] = $data[$i]['merch_id'];
+        $merchid = $user_data['merch_id'];
+        $fid = $user_data['FID'];
+
+        if($user_data['FID'] != '99' && $user_data['FID'] != '1909')
+        {
+          $data1 = DB::select("[spVIDM_SelectBackEnd] '$fid'");
+          $data1 = json_encode($data1);
+          $data1 = json_decode($data1, true);
+
+          $data[$i]['FMERCHNAME'] = $data1[0]['FNAME'];
+        }
+        else if($user_data['FID'] == '1909')
+        {
+          $data[$i]['FMERCHNAME'] = 'Wirecard';
+        }
+        else {
+          $merchant_call = DB::select("[spVIDM_GetMerchant] '$merchid'");
+
+          $merchant_call = json_encode($merchant_call);
+          $merchant_call = json_decode($merchant_call, true);
+
+          $data[$i]['FMERCHNAME'] = $merchant_call[0]['FMERCHNAME'];
+        }
+
+      }
+
       $res['success'] = true;
       $res['result'] = $data;
 

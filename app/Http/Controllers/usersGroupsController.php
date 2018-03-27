@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class usersGroupsController extends Controller
 {
@@ -10,21 +11,25 @@ class usersGroupsController extends Controller
   {
     try
     {
-      $corporateName = $request->corporateName;
-      $file = $request->file;
-      //$date = $request->date;
+      $name = $request->name;
+      $group = $request->group;
+      $branch = $request->branch;
+      $note = $request->note;
+      $username = $request->username;
+      $password = $request->password;
+      $status = '1';
 
-      $data = DB::statement("[spVIDM_InsertNewCorporate] '$corporateName', '$file' ");
+      $data = DB::statement("[spVIDM_InsertNewUser] '$name', '$group', '$branch', '$note', '$username', '$password'");
 
       $res['success'] = true;
-      $res['result'] = "Add Corporate Success";
+      $res['result'] = "Add Users Success";
 
       return response($res);
     }
     catch(QueryException $ex)
     {
       $res['success'] = false;
-      $res['result'] = 'Add Corporate Failed';
+      $res['result'] = 'Add Users Failed';
 
       return response($res);
     }

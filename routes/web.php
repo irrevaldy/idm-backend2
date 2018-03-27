@@ -64,14 +64,14 @@ Route::post('/update_merchant', ['uses' =>'corporateMerchantController@updateMer
 Route::post('/delete_merchant', ['uses' =>'corporateMerchantController@deleteMerchant']);
 
 Route::post('/users', ['uses' => 'globalController@getUsersData']);
-Route::post('/add_users', ['uses' =>'UsersGroupsController@addUsers']);
-Route::post('/update_users', ['uses' =>'UsersGroupsController@updateUsers']);
-Route::post('/delete_users', ['uses' =>'UsersGroupsController@deleteUsers']);
+Route::post('/add_users', ['uses' =>'usersGroupsController@addUsers']);
+Route::post('/update_users', ['uses' =>'usersGroupsController@updateUsers']);
+Route::post('/delete_users', ['uses' =>'usersGroupsController@deleteUsers']);
 
 Route::post('/groups', ['uses' => 'globalController@getGroupsData']);
-Route::post('/add_groups', ['uses' =>'UsersGroupsController@addGroups']);
-Route::post('/update_groups', ['uses' =>'UsersGroupsController@updateGroups']);
-Route::post('/delete_groups', ['uses' =>'UsersGroupsController@deleteGroups']);
+Route::post('/add_groups', ['uses' =>'usersGroupsController@addGroups']);
+Route::post('/update_groups', ['uses' =>'usersGroupsController@updateGroups']);
+Route::post('/delete_groups', ['uses' =>'usersGroupsController@deleteGroups']);
 
 Route::post('/update_password', ['uses' =>'globalController@updatePassword']);
 
