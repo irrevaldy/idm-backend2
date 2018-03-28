@@ -93,7 +93,7 @@ class globalController extends Controller
     $user_id = $request->user_id;
 
 		try{
-			$data = DB::select("[spPortal_ViewUser] '$FCODE','$user_id'");
+			$data = DB::select("[spVIDM_ViewUser] '$FCODE','$user_id'");
 
       $data = json_encode($data);
       $data = json_decode($data, true);
