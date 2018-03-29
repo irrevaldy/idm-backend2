@@ -148,6 +148,7 @@ class usersGroupsController extends Controller
       $now = date("Ymdhis");
 
       $delete_user_id = $request->delete_user_id;
+      $delete_name = $request->delete_name;
       $session_username = $request->session_username;
       $session_name = $request->session_name;
       $session_user_id = $request->session_user_id;
@@ -157,7 +158,7 @@ class usersGroupsController extends Controller
       $res['success'] = true;
       $res['result'] = "Delete Corporate Success";
 
-      $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '19', '$session_user_id', '$session_username', '$session_name', $now, 'Delete user, username : $delete_user_id'");
+      $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '19', '$session_user_id', '$session_username', '$session_name', $now, 'Delete user, $delete_name'");
 
 
       return response($res);
@@ -175,22 +176,33 @@ class usersGroupsController extends Controller
   {
     try
     {
-      $corporateId = $request->corporateId;
-      $merchName = $request->merchName;
-      $file = $request->file;
+      date_default_timezone_set('Asia/Jakarta');
+      $now = date("Ymdhis");
+
+      $name = $request->name;
+      $note = $request->note;
+      $institute = $request->institute;
+      $merchant = $request->merchant;
+      $priv = $request->priv;
+      $session_username = $request->session_username;
+      $session_name = $request->session_name;
+      $session_user_id = $request->session_user_id;
       //$date = $request->date;
 
-      $data = DB::statement("[spVIDM_InsertNewMerchant] '$corporateId', '$merchName','$file' ");
+      $data = DB::statement("[spVIDM_InsertNewGroups] '$name', '$note', '$institute', '$merchant', '$priv' ");
 
       $res['success'] = true;
-      $res['result'] = "Add Merchant Success";
+      $res['result'] = "Add Group Success";
+
+      $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '14', '$session_user_id', '$session_username', '$session_name', $now, 'Add group $name for $institute and $merchant'");
+
 
       return response($res);
     }
     catch(QueryException $ex)
     {
       $res['success'] = false;
-      $res['result'] = 'Add Merchant Failed';
+      $res['result'] = 'Add Group Failed';
 
       return response($res);
     }
@@ -200,23 +212,97 @@ class usersGroupsController extends Controller
   {
     try
     {
-      $merchId = $request->merchId;
-      $corporateId = $request->corporateId;
-      $merchName = $request->merchName;
-      $file = $request->file;
-      //$date = $request->date;
+      date_default_timezone_set('Asia/Jakarta');
+      $now = date("Ymdhis");
 
-      $data = DB::statement("[spVIDM_UpdateMerchant] '$merchId', '$corporateId', '$merchName', '$file' ");
+      $group_id = $request->group_id;
+      $name = $request->name;
+      $institute = $request->institute;
+      $merchant = $request->merchant;
+      $note = $request->note;
+      $status = $request->status;
+      $priv = $request->priv;
+      $session_username = $request->session_username;
+      $session_user_id = $request->sesssion_user_id;
+      $session_name = $request->session_name;
+
+      $changePriv = "n";
+
+      $check = DB::select("[spVIDM_ViewDetailGroup] '$group_id' ");
+
+      $check = json_encode($check);
+      $check = json_decode($check, true);
+
+      $old_groupName = $check[0]['groupName'];
+      $old_description = $check[0]['description'];
+      $old_FID = $check[0]['FID'];
+      $old_status = $check[0]['status'];
+      $old_merchant = $check[0]['merch_id'];
+
+      $desc_at = "";
+      if($name != $old_groupName || $note != $old_description || $status != $old_status || $institute != $old_FID || $merchant != $old_merchant || $changePriv != "n") {
+          $desc_at = "Change";
+      }
+
+      if ($name != $old_groupName) {
+          if($desc_at == "Change") {
+              $desc_at .= " group name";
+          }
+      }
+
+      if ($note != $old_description) {
+          if($desc_at == "Change") {
+              $desc_at .= " note";
+          } else {
+              $desc_at .= ", note";
+          }
+      }
+
+      if ($institute != $old_FID) {
+          if($desc_at == "Change") {
+              $desc_at .= " host";
+          } else {
+              $desc_at .= ", host";
+          }
+      }
+
+      if ($merchant != $old_merchant) {
+          if($desc_at == "Change") {
+              $desc_at .= " merchant";
+          } else {
+              $desc_at .= ", old_merchant";
+          }
+      }
+
+      if ($status != $old_status) {
+          if($desc_at == "Change") {
+              $desc_at .= " status";
+          } else {
+              $desc_at .= ", status";
+          }
+      }
+
+      if($changePriv == "y") {
+          if($desc_at == "Change") {
+              $desc_at .= " privileges";
+          } else {
+              $desc_at .= ", privileges";
+          }
+      }
+
+      $data = DB::statement("[spVIDM_UpdateGroup] '$group_id', '$name', '$institute', '$merchant', '$note', '$status' ");
 
       $res['success'] = true;
-      $res['result'] = "Update Merchant Success";
+      $res['result'] = "Update Group Success";
+
+      $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '15', '$session_user_id', '$session_username', '$session_name', $now, 'Update group $name for $institute. $desc_at'");
 
       return response($res);
     }
     catch(QueryException $ex)
     {
       $res['success'] = false;
-      $res['result'] = 'Update Merchant Failed';
+      $res['result'] = 'Update Group Failed';
 
       return response($res);
     }
@@ -226,19 +312,30 @@ class usersGroupsController extends Controller
   {
     try
     {
-      $merchantIdDel = $request->merchantIdDel;
+      date_default_timezone_set('Asia/Jakarta');
+      $now = date("Ymdhis");
 
-      $data = DB::statement("[spVIDM_DeleteMerchant] '$merchantIdDel' ");
+      $delete_group_id = $request->delete_group_id;
+      $delete_groupName = $request->delete_groupName;
+      $delete_group_host = $request->delete_group_host;
+
+      $session_username = $request->session_username;
+      $session_user_id = $request->sesssion_user_id;
+      $session_name = $request->session_name;
+
+      $data = DB::statement("[spPortal_DeleteGroup] '$delete_group_id' ");
 
       $res['success'] = true;
-      $res['result'] = "Delete Merchant Success";
+      $res['result'] = "Delete Group Success";
+
+      $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '16', '$session_user_id', '$session_username', '$session_name', $now, 'Delete group $delete_groupName for $delete_group_host'");
 
       return response($res);
     }
     catch(QueryException $ex)
     {
       $res['success'] = false;
-      $res['result'] = 'Delete Merchant Failed';
+      $res['result'] = 'Delete Group Failed';
 
       return response($res);
     }

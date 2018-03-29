@@ -143,7 +143,7 @@ class globalController extends Controller
     $group_id = $request->group_id;
 
     try{
-      $data = DB::select("[spPortal_ViewGroup] '$FCODE','$group_id'");
+      $data = DB::select("[spVIDM_ViewGroup] '$FCODE','$group_id'");
       $data = json_encode($data);
       $data = json_decode($data, true);
 
