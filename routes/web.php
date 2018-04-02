@@ -32,6 +32,7 @@ Route::get('/host_data', ['uses' => 'globalController@getHostData']);
 Route::get('/corporate_data', ['uses' => 'globalController@getCorporateData']);
 Route::get('/merchant_data/{corporate_id}', ['uses' => 'globalController@getMerchantData']);
 Route::get('/card_data', ['uses' => 'globalController@getCardData']);
+Route::get('/branch_data', ['uses' => 'globalController@getBranchData']);
 
 /* Search transaction */
 Route::post('/search_transaction', ['uses' => 'searchTransactionController@search']);

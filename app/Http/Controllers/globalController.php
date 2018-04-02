@@ -17,21 +17,46 @@ class globalController extends Controller
 
     }
 
-    public function getHostData(Request $request) {
+    public function getBranchData(Request $request)
+    {
+      $merch_id = $request->merch_id;
 
-		try{
-			$data = DB::select("[spDWH_getHostData]");
-			$res['success'] = true;
-			$res['result'] = $data;
+  		try
+      {
+  			$data = DB::select("[spVIDM_getBranchData] '$merch_id' ");
+  			$res['success'] = true;
+  			$res['result'] = $data;
 
-			return response($res);
-		} catch(QueryException $ex){
-			$res['success'] = false;
-			$res['result'] = 'Query Exception.. Please Check Database!';
+  			return response($res);
+  		}
+      catch(QueryException $ex)
+      {
+  			$res['success'] = false;
+  			$res['result'] = 'Query Exception.. Please Check Database!';
 
-			return response($res);
-		}
+  			return response($res);
+  		}
+	}
 
+  public function getHostData(Request $request)
+    {
+      $merch_id = $request->merch_id;
+
+  		try
+      {
+  			$data = DB::select("[spVIDM_getHostData] '$merch_id' ");
+  			$res['success'] = true;
+  			$res['result'] = $data;
+
+  			return response($res);
+  		}
+      catch(QueryException $ex)
+      {
+  			$res['success'] = false;
+  			$res['result'] = 'Query Exception.. Please Check Database!';
+
+  			return response($res);
+  		}
 	}
 
 	public function getCorporateData(Request $request) {
