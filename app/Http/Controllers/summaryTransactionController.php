@@ -50,9 +50,9 @@ class summaryTransactionController extends Controller
 
 		try{
 
-			$bankCode = $request->bank_code;
-			$trxType = $request->transaction_type;
-			$corpId = $request->corporate;
+			$bankCode = $request->bank_code_rc;
+			$trxType = $request->trx_type_rc;
+			$corpId = $request->corp_id_rc;
 			$month = $request->month;
 
 			$data = DB::select("[spPortal_getSummaryResponseCodeData] '$bankCode', '$trxType', '$corpId', '$month' ");

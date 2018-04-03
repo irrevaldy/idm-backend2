@@ -30,9 +30,10 @@ Route::get('/user/{username}', ['uses' => 'UserController@getUserToken']);
 /* Global function */
 Route::get('/host_data', ['uses' => 'globalController@getHostData']);
 Route::get('/corporate_data', ['uses' => 'globalController@getCorporateData']);
-Route::get('/merchant_data/{corporate_id}', ['uses' => 'globalController@getMerchantData']);
+Route::post('/merchant_data', ['uses' => 'globalController@GetMerchantDataByCorpId']);
 Route::get('/card_data', ['uses' => 'globalController@getCardData']);
 Route::get('/branch_data', ['uses' => 'globalController@getBranchData']);
+Route::get('/bank_data', ['uses' => 'globalController@getBankData']);
 
 /* Search transaction */
 Route::post('/search_transaction', ['uses' => 'searchTransactionController@search']);

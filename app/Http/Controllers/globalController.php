@@ -23,7 +23,7 @@ class globalController extends Controller
 
   		try
       {
-  			$data = DB::select("[spVIDM_getBranchData] '$merch_id' ");
+  			$data = DB::select("[spVIDM_GetBranchData] '$merch_id' ");
   			$res['success'] = true;
   			$res['result'] = $data;
 
@@ -37,6 +37,25 @@ class globalController extends Controller
   			return response($res);
   		}
 	}
+
+  public function getBankData(Request $request)
+  {
+    try
+    {
+      $data = DB::select("[spVIDM_GetBankData]");
+      $res['success'] = true;
+      $res['result'] = $data;
+
+      return response($res);
+    }
+    catch(QueryException $ex)
+    {
+      $res['success'] = false;
+      $res['result'] = 'Query Exception.. Please Check Database!';
+
+      return response($res);
+    }
+}
 
   public function getHostData(Request $request)
     {
@@ -93,12 +112,30 @@ class globalController extends Controller
 
 	}
 
+  public function GetMerchantDataByCorpId(Request $request)
+  {
+    $id_corp = $request->corporate;
+    try{
+      $data = DB::select("[spVIDM_getMerchant] '$id_corp' ");
+      $res['success'] = true;
+      $res['result'] = $data;
+
+      return response($res);
+    } catch(QueryException $ex){
+      $res['success'] = false;
+      $res['result'] = 'Query Exception.. Please Check Database!';
+
+      return response($res);
+    }
+
+  }
+
 
 
 	public function getCardData(Request $request) {
 
 		try{
-			$data = DB::select("[spDWH_getCardData]");
+			$data = DB::select("[spVIDM_GetCardData]");
 			$res['success'] = true;
 			$res['result'] = $data;
 
