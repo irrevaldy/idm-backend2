@@ -34,6 +34,8 @@ Route::post('/merchant_data', ['uses' => 'globalController@GetMerchantDataByCorp
 Route::get('/card_data', ['uses' => 'globalController@getCardData']);
 Route::get('/branch_data', ['uses' => 'globalController@getBranchData']);
 Route::get('/bank_data', ['uses' => 'globalController@getBankData']);
+Route::post('/group_data', ['uses' => 'globalController@getGroupData']);
+Route::post('/institute_data', ['uses' => 'globalController@getInstituteData']);
 
 /* Search transaction */
 Route::post('/search_transaction', ['uses' => 'searchTransactionController@search']);

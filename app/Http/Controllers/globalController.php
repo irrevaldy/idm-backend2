@@ -63,7 +63,7 @@ class globalController extends Controller
 
   		try
       {
-  			$data = DB::select("[spVIDM_getHostData] '$merch_id' ");
+  			$data = DB::select("[spVIDM_getHostData] '$merch_id'");
   			$res['success'] = true;
   			$res['result'] = $data;
 
@@ -170,7 +170,7 @@ class globalController extends Controller
 
         if($user_data['FID'] == '99')
         {
-          $merchant_call = DB::select("[spVIDM_GetMerchant] '$merchid'");
+          $merchant_call = DB::select("[spVIDM_GetMerchantbyFID] '$merchid'");
 
           $merchant_call = json_encode($merchant_call);
           $merchant_call = json_decode($merchant_call, true);
@@ -231,7 +231,7 @@ class globalController extends Controller
           $data[$i]['FMERCHNAME'] = 'Wirecard';
         }
         else {
-          $merchant_call = DB::select("[spVIDM_GetMerchant] '$merchid'");
+          $merchant_call = DB::select("[spVIDM_GetMerchantbyFID] '$merchid'");
 
           $merchant_call = json_encode($merchant_call);
           $merchant_call = json_decode($merchant_call, true);
@@ -253,6 +253,28 @@ class globalController extends Controller
     }
 
   }
+
+  public function getGroupData(Request $request)
+    {
+      $fcode = $request->fcode;
+      $fid = $request->fid;
+
+  		try
+      {
+  			$data = DB::select("[spVIDM_GetGroupData] '$fcode' , '$fid' ");
+  			$res['success'] = true;
+  			$res['result'] = $data;
+
+  			return response($res);
+  		}
+      catch(QueryException $ex)
+      {
+  			$res['success'] = false;
+  			$res['result'] = 'Query Exception.. Please Check Database!';
+
+  			return response($res);
+  		}
+	}
 
   public function updatePassword(Request $request)
   {
@@ -351,5 +373,34 @@ class globalController extends Controller
 
       return response($res);
     }
+  }
+
+  public function getInstituteData(Request $request)
+    {
+      $fcode = $request->fcode;
+
+      try
+      {
+        if($fcode == 'pvs1909')
+        {
+            $data = DB::select("[spPortal_ViewInstitute]");
+        }
+        else
+        {
+            $data = DB::select("[spVIDM_selectFID] '$fcode'");
+        }
+
+        $res['success'] = true;
+        $res['result'] = $data;
+
+        return response($res);
+      }
+      catch(QueryException $ex)
+      {
+        $res['success'] = false;
+        $res['result'] = 'Query Exception.. Please Check Database!';
+
+        return response($res);
+      }
   }
 }
