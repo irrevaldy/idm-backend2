@@ -19,7 +19,10 @@ class usersGroupsController extends Controller
       $password = $request->password;
       $status = '1';
 
+
       $data = DB::statement("[spVIDM_InsertNewUser] '$name', '$group', '$branch', '$note', '$username', '$password'");
+
+
 
       $res['success'] = true;
       $res['result'] = "Add Users Success";
@@ -189,13 +192,23 @@ class usersGroupsController extends Controller
       $session_user_id = $request->session_user_id;
       //$date = $request->date;
 
-      $data = DB::statement("[spVIDM_InsertNewGroups] '$name', '$note', '$institute', '$merchant', '$priv' ");
+      $data = DB::statement("[spVIDM_InsertNewGroups] '$name', '$note', '$institute', '$merchant','1'");
+
+      $group = DB::select("[spVIDM_SelectGroupId] '$name'");
+
+      $group = json_encode($group);
+      $group = json_decode($group, true);
+
+      $groupID = $group[0]['group_id'];
+      foreach($priv as $value)
+      {
+        $insert_policy = DB::statement("[spVIDM_InsertPrivilege] '$value','$groupID'");
+      }
 
       $res['success'] = true;
       $res['result'] = "Add Group Success";
 
       $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '14', '$session_user_id', '$session_username', '$session_name', $now, 'Add group $name for $institute and $merchant'");
-
 
       return response($res);
     }

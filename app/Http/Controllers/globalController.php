@@ -217,6 +217,7 @@ class globalController extends Controller
         $user_data['merch_id'] = $data[$i]['merch_id'];
         $merchid = $user_data['merch_id'];
         $fid = $user_data['FID'];
+        $group_id_each = $data[$i]['group_id'];
 
         if($user_data['FID'] != '99' && $user_data['FID'] != '1909')
         {
@@ -239,6 +240,29 @@ class globalController extends Controller
           $data[$i]['FMERCHNAME'] = $merchant_call[0]['FMERCHNAME'];
         }
 
+        $group_policy =  DB::select("[spVIDM_SelectGroupPolicy] '$group_id_each'");
+
+        $group_policy = json_encode($group_policy);
+        $group_policy = json_decode($group_policy, true);
+        $totals = count($group_policy);
+        // $garray = array();
+        // for($j = 0; $j < $totals; $j++)
+        // {
+        //   $garray[$j] = $group_policy[$j]['policy_id'];
+        // }
+        // $data[$i]['GROUP_POLICY'] = $garray;
+
+        $gar = '';
+          for($j = 0; $j < $totals; $j++)
+          {
+            $gar .= $group_policy[$j]['policy_id'];
+            if($j+1 != $totals)
+            {
+              $gar .= ',';
+            }
+
+          }
+          $data[$i]['GROUP_POLICY'] = $gar;
       }
 
       $res['success'] = true;
@@ -389,6 +413,28 @@ class globalController extends Controller
         {
             $data = DB::select("[spVIDM_selectFID] '$fcode'");
         }
+
+        $res['success'] = true;
+        $res['result'] = $data;
+
+        return response($res);
+      }
+      catch(QueryException $ex)
+      {
+        $res['success'] = false;
+        $res['result'] = 'Query Exception.. Please Check Database!';
+
+        return response($res);
+      }
+  }
+
+  public function getPolicyData(Request $request)
+    {
+      $fcode = $request->fcode;
+
+      try
+      {
+        $data = DB::select("[spVIDM_GetPolicyData] '$fcode'");
 
         $res['success'] = true;
         $res['result'] = $data;
