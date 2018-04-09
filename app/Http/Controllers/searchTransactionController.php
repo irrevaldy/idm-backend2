@@ -31,6 +31,16 @@ class searchTransactionController extends Controller
       $startDate = $transaction_date;
       $endDate = $transaction_date;
 
+      $transaction_date = explode(' - ', $transaction_date);
+
+      $startDate = $transaction_date[0];
+      $startDate = explode('/', $startDate);
+      $startDate = $startDate[2].$startDate[1].$startDate[0];
+
+      $endDate = $transaction_date[0];
+      $endDate = explode('/', $endDate);
+      $endDate = $endDate[2].$endDate[1].$endDate[0];
+
 		try{
 
 			//$corporate = $request->corporate;
