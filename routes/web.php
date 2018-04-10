@@ -50,6 +50,7 @@ Route::post('/summary_transaction', ['uses' => 'summaryTransactionController@sum
 Route::post('/summary_response_code', ['uses' => 'summaryTransactionController@summaryResponseCode']);
 
 Route::post('/tcash/setup', ['uses' => 'tcashSetupController@setTcashLimit']);
+Route::post('/tcash/checkLimit', ['uses' => 'tcashSetupController@checkLimit']);
 
 Route::post('/edc_data/checkSN', ['uses' => 'edcDataController@checkSN']);
 Route::post('/edc_data/getSN', ['uses' => 'edcDataController@getSN']);
