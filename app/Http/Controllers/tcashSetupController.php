@@ -24,38 +24,6 @@ class tcashSetupController extends Controller
       $storeCode = $request->storeCode;
       $newLimit = $request->newLimit;
 
-<<<<<<< HEAD
-    try{
-
-      $storeCode = $request->storeCode;
-      $currLimit = $request->currLimit;
-      $newLimit = $request->newLimit;
-
-      $data = DB::statement("[spVIDM_setTcashLimit] '$storeCode', '$currLimit', '$newLimit' ");
-
-      $res['success'] = true;
-      $res['result'] = "Sukses";
-
-      return response($res);
-    } catch(QueryException $ex){
-      $res['success'] = false;
-      $res['result'] = 'Query Exception.. Please Check Database!';
-
-      return response($res);
-    }
-
-  }
-
-  public function checkLimit(Request $request)
-  {
-    try
-    {
-      $storeCode = $request->storeCode;
-      $branchCode = $request->branchCode;
-      $merch_id = $request->merch_id;
-
-      $data = DB::select("[spVIDM_checkLimit] '$storeCode', '$branchCode','$merch_id'");
-=======
       $data = DB::statement("[spVIDM_setTcashLimit] '$storeCode', '$newLimit' ");
 
       $res['success'] = true;
@@ -82,7 +50,6 @@ class tcashSetupController extends Controller
       $merch_id = $request->merch_id;
 
       $data = DB::select("[spVIDM_checkLimit] '$storeCode', '$branchCode', '$merch_id' ");
->>>>>>> ff3643aaf47bc39f323be32b34f0bf94424d52f3
 
       $data = json_encode($data);
       $data = json_decode($data, true);
@@ -91,21 +58,6 @@ class tcashSetupController extends Controller
 
       if($limit == '')
       {
-<<<<<<< HEAD
-        $limit = 0;
-
-        $res['success'] = true;
-        $res['status'] = "not found";
-        $res['limit'] = $limit;
-      }
-      else
-      {
-        $res['success'] = true;
-        $res['status'] = "found";
-        $res['limit'] = $limit;
-      }
-
-=======
         $limit = '0';
 
         $limit_data['status'] = "not found";
@@ -120,7 +72,6 @@ class tcashSetupController extends Controller
       $res['success'] = true;
       $res['result'] = $limit_data;
 
->>>>>>> ff3643aaf47bc39f323be32b34f0bf94424d52f3
       return response($res);
     }
     catch(QueryException $ex)
@@ -130,9 +81,6 @@ class tcashSetupController extends Controller
 
       return response($res);
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> ff3643aaf47bc39f323be32b34f0bf94424d52f3
   }
 }
