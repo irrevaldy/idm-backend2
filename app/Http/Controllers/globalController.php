@@ -311,6 +311,7 @@ class globalController extends Controller
     $oldPassword = $request->oldPassword;
     $newPassword = $request->newPassword;
     $note = $request->note;
+    $desc = '';
 
     try
     {
@@ -371,16 +372,20 @@ class globalController extends Controller
       		$desc = "Change name";
       	}
 
-        $data = DB::statement("[spPortal_UpdateProfile] '$user_id', '$username', '$oldPassword', '$name', '$note'");
+        $data = DB::statement("[spPortal_UpdateProfile] '$user_id', '$username', '$oldPassword2', '$name', '$note'");
 
-      	if ($data)
+      	if($data)
         {
-      		Session::put('name', $name);
+          if($name != $oldName) {
+        		$desc = "Change name";
+        	}
+      		$user_data['name'] = $name;
 
           $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '5', '$user_id', '$username', '$name', $now, '$desc'");
 
           $res['status'] = '#SUCCESS';
           $res['message'] = 'Update Profile Success';
+          $res['data'] = $user_data;
       	}
         else
         {

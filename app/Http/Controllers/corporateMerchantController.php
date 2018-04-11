@@ -133,7 +133,7 @@ class corporateMerchantController extends Controller
   {
     try
     {
-      $merchantIdDel = $request->merchantIdDel;
+      $merchantIdDel = $request->merchIdDel;
 
       $data = DB::statement("[spVIDM_DeleteMerchant] '$merchantIdDel' ");
 

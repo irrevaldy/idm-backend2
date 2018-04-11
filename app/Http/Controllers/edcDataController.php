@@ -144,10 +144,26 @@ class edcDataController extends Controller
 
       $midList = array("Serial Number", "TID MDR REGULER", "MID MDR REGULER", "TID MDR POWERBUY 3", "MID MDR POWERBUY 3", "TID MDR POWERBUY 6", "MID MDR POWERBUY 6", "TID MDR POWERBUY 12", "MID MDR POWERBUY 12", "TID MDR PREPAID", "MID MDR PREPAID", "TID BNI", "MID BNI", "TID BRI", "MID BRI", "TID TCASH", "MID TCASH", "TID CIMB", "MID CIMB"); //label for view
 
-      $data = array("corporate"=>"$corporate",
-                    "merchant"=>"$merchant",
-                    "highestRow_count" => $highestRow_count,
-                  "storage_path" => $storage_path);
+      $getcorpname = DB::select("[spVIDM_getCorporatebyID] '$corporate' ");
+
+      $getcorpname = json_encode($getcorpname);
+      $getcorpname = json_decode($getcorpname, true);
+
+      $corpName = $getcorpname[0]['CORP_NAME'];
+
+      $getmerchname = DB::select("[spVIDM_getMerchantbyFID] '$merchant' ");
+
+      $getmerchname = json_encode($getmerchname);
+      $getmerchname = json_decode($getmerchname, true);
+
+      $merchName = $getmerchname[0]['FMERCHNAME'];
+
+      $gettotalfsn = DB::select("[spVIDM_selectCountSN_MerchID] '$merchant' ");
+
+      $gettotalfsn = json_encode($gettotalfsn);
+      $gettotalfsn = json_decode($gettotalfsn, true);
+
+      $totalfsn = $gettotalfsn[0]['total'];
 
       $headerExcel = array();
       $headerExcel2 = array();
@@ -197,6 +213,10 @@ class edcDataController extends Controller
 
       $maxCol = count($indexExcel) + 1;
 
+      $error = "";
+      $no = 1;
+      $errorCounter = 0;
+
       //body row
       for ($row = 2; $row <= $highestRow; ++ $row) {
         $col = 0;
@@ -213,10 +233,14 @@ class edcDataController extends Controller
         if($sn == NULL || $sn == '')
         {
           $sn_status = 'SN is empty. Broken Data.';
+          $error = "ya";
+          $errorCounter = $errorCounter + 1;
         }
         elseif(count($datas) > 0)
         {
           $sn_status = 'SN has been registered';
+          $error = "ya";
+          $errorCounter = $errorCounter + 1;
         }
         else
         {
@@ -233,11 +257,21 @@ class edcDataController extends Controller
           //$dataType = PHPExcel_Cell_DataType::dataTypeForValue($mid);
           $array[$value] = $mid;
           $array['status'] = $sn_status;
+          $array['error'] = $error;
           //array_push($array , "status" => $sn);
         }
 
       $bodyExcel[] = $array;
     }
+
+    $data = array("corporate" => $corpName,
+                  "merchant"=> $merchName,
+                  "merchId" => $merchant,
+                  "highestRow_count" => $highestRow_count,
+                  "total_fsn" => $totalfsn,
+                "storage_path" => $storage_path,
+              "error" => $error,
+            "errorCounter" => $errorCounter);
 
       $res['success'] = true;
       $res['result'] = $data;
@@ -379,7 +413,7 @@ class edcDataController extends Controller
           $queryInsert = DB::statement("[spPortal_regisEdc] 'insert', '$merchant', '$sn', '$midFull'");
         }
         $res['success'] = true;
-        $res['result'] = 'Add Corporate Success';
+        $res['result'] = 'Add EDC Success';
 
         $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '22', '$user_id', '$username', '$name', $now, 'Import SN, filename: $storage_path, merchant ID: $merchant'");
 
@@ -388,7 +422,7 @@ class edcDataController extends Controller
       catch(QueryException $ex)
       {
         $res['success'] = false;
-        $res['result'] = 'Add Corporate Failed';
+        $res['result'] = 'Add EDC Failed';
 
         return response($res);
       }
