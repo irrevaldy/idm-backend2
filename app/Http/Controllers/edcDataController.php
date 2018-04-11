@@ -266,6 +266,7 @@ class edcDataController extends Controller
 
     $data = array("corporate" => $corpName,
                   "merchant"=> $merchName,
+                  "merchId" => $merchant,
                   "highestRow_count" => $highestRow_count,
                   "total_fsn" => $totalfsn,
                 "storage_path" => $storage_path,
@@ -412,7 +413,7 @@ class edcDataController extends Controller
           $queryInsert = DB::statement("[spPortal_regisEdc] 'insert', '$merchant', '$sn', '$midFull'");
         }
         $res['success'] = true;
-        $res['result'] = 'Add Corporate Success';
+        $res['result'] = 'Add EDC Success';
 
         $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '22', '$user_id', '$username', '$name', $now, 'Import SN, filename: $storage_path, merchant ID: $merchant'");
 
@@ -421,7 +422,7 @@ class edcDataController extends Controller
       catch(QueryException $ex)
       {
         $res['success'] = false;
-        $res['result'] = 'Add Corporate Failed';
+        $res['result'] = 'Add EDC Failed';
 
         return response($res);
       }

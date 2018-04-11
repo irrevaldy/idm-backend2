@@ -25,14 +25,14 @@ class usersGroupsController extends Controller
 
 
       $res['success'] = true;
-      $res['result'] = "Add Users Success";
+      $res['result'] = "Add User Success";
 
       return response($res);
     }
     catch(QueryException $ex)
     {
       $res['success'] = false;
-      $res['result'] = 'Add Users Failed';
+      $res['result'] = 'Add User Failed';
 
       return response($res);
     }
@@ -159,7 +159,7 @@ class usersGroupsController extends Controller
       $data = DB::statement("[spPortal_DeleteUser] '$delete_user_id' ");
 
       $res['success'] = true;
-      $res['result'] = "Delete Corporate Success";
+      $res['result'] = "Delete User Success";
 
       $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '19', '$session_user_id', '$session_username', '$session_name', $now, 'Delete user, $delete_name'");
 
@@ -169,7 +169,7 @@ class usersGroupsController extends Controller
     catch(QueryException $ex)
     {
       $res['success'] = false;
-      $res['result'] = 'Delete Corporate Failed';
+      $res['result'] = 'Delete User Failed';
 
       return response($res);
     }
@@ -239,7 +239,35 @@ class usersGroupsController extends Controller
       $session_user_id = $request->sesssion_user_id;
       $session_name = $request->session_name;
 
+      $old_priv = array();
+      $rs_priv = DB::select("[spVIDM_ViewPolicyByGroupID] '$group_id' ");
+
+      $rs_priv = json_encode($rs_priv);
+      $rs_priv = json_decode($rs_priv, true);
+
+      $total = count($rs_priv);
+
+      for($i = 0; $i < $total; $i++)
+      {
+        $tp = $rs_priv[$i]['policy_id'];
+
+        $old_priv[] = $tp;
+      }
+
       $changePriv = "n";
+
+      if(count($priv) != count($old_priv)) {
+          $changePriv = "y";
+      } else {
+          foreach ($priv as $value){
+              if(!in_array($value, $old_priv)) {
+
+                 $changePriv = "y";
+
+                  break;
+              }
+          }
+      }
 
       $check = DB::select("[spVIDM_ViewDetailGroup] '$group_id' ");
 
@@ -305,10 +333,49 @@ class usersGroupsController extends Controller
 
       $data = DB::statement("[spVIDM_UpdateGroup] '$group_id', '$name', '$institute', '$merchant', '$note', '$status' ");
 
-      $res['success'] = true;
-      $res['result'] = "Update Group Success";
+      try
+      {
+        if($data)
+        {
+          $q_del_policy = DB::statement("[spVIDM_DeletePolicy] '$group_id'");
 
-      $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '15', '$session_user_id', '$session_username', '$session_name', $now, 'Update group $name for $institute. $desc_at'");
+          if($q_del_policy)
+          {
+            foreach($priv as $value)
+            {
+              $q_ins_policy = DB::statement("[spVIDM_InsertPolicy] '$value', '$group_id'");
+              if($q_ins_policy) {}
+              else
+              {
+                throw new Exception("Insert TGROUP_POLICY failed.");
+                $messages = "Insert Group Policy Failed";
+                echo "Insert TGROUP_POLICY failed.";
+                break;
+              }
+            }
+          }
+          else
+          {
+            throw new Exception("Insert TGROUP_POLICY failed.");
+            $messages = "Insert Group Policy Failed";
+            echo "Delete TGROUP_POLICY failed.";
+            break;
+          }
+        }
+        $messages ="berhasil";
+      }
+      catch (QueryException $ex) {
+        $messages = "Update TGROUP failed.";
+        echo "Update TGROUP failed.";
+      }
+
+      if($messages == 'berhasil')
+      {
+        $res['success'] = true;
+        $res['result'] = 'Update Group Success';
+
+        $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '15', '$session_user_id', '$session_username', '$session_name', $now, 'Update group $name for $institute. $desc_at'");
+      }
 
       return response($res);
     }
