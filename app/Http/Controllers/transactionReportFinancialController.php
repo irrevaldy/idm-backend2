@@ -26,7 +26,7 @@ class transactionReportFinancialController extends Controller
     $username = $request->username;
     $name = $request->name;
 
-    $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '13', '$user_id', '$username', '$name', $now, 'Generate Transaction Report Financial Laravel'");
+    $audit_trail = DB::statement("[spVIDM_InsertAuditTrail] '13', '$user_id', '$username', '$name', $now, 'Generate Transaction Report Financial Laravel'");
 
     $res['success'] = true;
     $res['result'] = 'Audit Trail success';

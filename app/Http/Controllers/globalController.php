@@ -320,7 +320,7 @@ class globalController extends Controller
         $oldPassword = hash('sha256', $oldPassword);
       	$newPassword = hash('sha256',$newPassword);
 
-        $check = DB::select("[spPortal_ViewDetailUser] '$user_id'");
+        $check = DB::select("[spVIDM_ViewDetailUser] '$user_id'");
 
         $check = json_encode($check);
         $check = json_decode($check, true);
@@ -342,12 +342,12 @@ class globalController extends Controller
         }
         else
         {
-          $data = DB::statement("[spPortal_UpdateProfile] '$user_id', '$username', '$newPassword', '$name', '$note'");
+          $data = DB::statement("[spVIDM_UpdateProfile] '$user_id', '$username', '$newPassword', '$name', '$note'");
           if ($data)
           {
             Session::put('name', $name);
 
-            $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '5', '$user_id', '$username', '$name', $now, '$desc'");
+            $audit_trail = DB::statement("[spVIDM_InsertAuditTrail] '5', '$user_id', '$username', '$name', $now, '$desc'");
 
             $res['status'] = '#SUCCESS';
             $res['message'] = 'Update Profile Success';
@@ -361,7 +361,7 @@ class globalController extends Controller
       }
       else
       {
-      	$check = DB::select("[spPortal_ViewDetailUser] '$user_id'");
+      	$check = DB::select("[spVIDM_ViewDetailUser] '$user_id'");
 
         $check = json_encode($check);
         $check = json_decode($check, true);
@@ -372,7 +372,7 @@ class globalController extends Controller
       		$desc = "Change name";
       	}
 
-        $data = DB::statement("[spPortal_UpdateProfile] '$user_id', '$username', '$oldPassword2', '$name', '$note'");
+        $data = DB::statement("[spVIDM_UpdateProfile] '$user_id', '$username', '$oldPassword2', '$name', '$note'");
 
       	if($data)
         {
@@ -381,7 +381,7 @@ class globalController extends Controller
         	}
       		$user_data['name'] = $name;
 
-          $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '5', '$user_id', '$username', '$name', $now, '$desc'");
+          $audit_trail = DB::statement("[spVIDM_InsertAuditTrail] '5', '$user_id', '$username', '$name', $now, '$desc'");
 
           $res['status'] = '#SUCCESS';
           $res['message'] = 'Update Profile Success';
@@ -412,7 +412,7 @@ class globalController extends Controller
       {
         if($fcode == 'pvs1909')
         {
-            $data = DB::select("[spPortal_ViewInstitute]");
+            $data = DB::select("[spVIDM_ViewInstitute]");
         }
         else
         {

@@ -57,7 +57,7 @@ class usersGroupsController extends Controller
       $session_name = $request->session_name;
       $session_user_id = $request->session_user_id;
 
-      $check = DB::select("[spPortal_ViewDetailUser] '$user_id' ");
+      $check = DB::select("[spVIDM_ViewDetailUser] '$user_id' ");
 
       $check = json_encode($check);
       $check = json_decode($check, true);
@@ -125,12 +125,12 @@ class usersGroupsController extends Controller
       $newpassword == $old_password;
       }
 
-      $update = DB::statement("[spPortal_updateUser] '$user_id', '$username', '$newpassword', '$name', '$note', '$group', '$branch', '$status'");
+      $update = DB::statement("[spVIDM_updateUser] '$user_id', '$username', '$newpassword', '$name', '$note', '$group', '$branch', '$status'");
 
       $res['success'] = true;
       $res['result'] = "Update User Success";
 
-      $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '18', '$session_user_id', '$session_username', '$session_name', $now, 'Update user for username : $username. $desc_at'");
+      $audit_trail = DB::statement("[spVIDM_InsertAuditTrail] '18', '$session_user_id', '$session_username', '$session_name', $now, 'Update user for username : $username. $desc_at'");
 
       return response($res);
     }
@@ -156,12 +156,12 @@ class usersGroupsController extends Controller
       $session_name = $request->session_name;
       $session_user_id = $request->session_user_id;
 
-      $data = DB::statement("[spPortal_DeleteUser] '$delete_user_id' ");
+      $data = DB::statement("[spVIDM_DeleteUser] '$delete_user_id' ");
 
       $res['success'] = true;
       $res['result'] = "Delete User Success";
 
-      $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '19', '$session_user_id', '$session_username', '$session_name', $now, 'Delete user, $delete_name'");
+      $audit_trail = DB::statement("[spVIDM_InsertAuditTrail] '19', '$session_user_id', '$session_username', '$session_name', $now, 'Delete user, $delete_name'");
 
 
       return response($res);
@@ -208,7 +208,7 @@ class usersGroupsController extends Controller
       $res['success'] = true;
       $res['result'] = "Add Group Success";
 
-      $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '14', '$session_user_id', '$session_username', '$session_name', $now, 'Add group $name for $institute and $merchant'");
+      $audit_trail = DB::statement("[spVIDM_InsertAuditTrail] '14', '$session_user_id', '$session_username', '$session_name', $now, 'Add group $name for $institute and $merchant'");
 
       return response($res);
     }
@@ -374,7 +374,7 @@ class usersGroupsController extends Controller
         $res['success'] = true;
         $res['result'] = 'Update Group Success';
 
-        $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '15', '$session_user_id', '$session_username', '$session_name', $now, 'Update group $name for $institute. $desc_at'");
+        $audit_trail = DB::statement("[spVIDM_InsertAuditTrail] '15', '$session_user_id', '$session_username', '$session_name', $now, 'Update group $name for $institute. $desc_at'");
       }
 
       return response($res);
@@ -403,12 +403,12 @@ class usersGroupsController extends Controller
       $session_user_id = $request->sesssion_user_id;
       $session_name = $request->session_name;
 
-      $data = DB::statement("[spPortal_DeleteGroup] '$delete_group_id' ");
+      $data = DB::statement("[spVIDM_DeleteGroup] '$delete_group_id' ");
 
       $res['success'] = true;
       $res['result'] = "Delete Group Success";
 
-      $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '16', '$session_user_id', '$session_username', '$session_name', $now, 'Delete group $delete_groupName for $delete_group_host'");
+      $audit_trail = DB::statement("[spVIDM_InsertAuditTrail] '16', '$session_user_id', '$session_username', '$session_name', $now, 'Delete group $delete_groupName for $delete_group_host'");
 
       return response($res);
     }

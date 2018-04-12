@@ -29,7 +29,7 @@ class summaryTransactionController extends Controller
 			$month = $request->month;
 			$respCode = $request->specifiedrc;
 
-			$data = DB::select("[spPortal_GetSummaryTransactionData] '$bankCode', '$cardType', '$trxType', '$corpId',
+			$data = DB::select("[spVIDM_GetSummaryTransactionData] '$bankCode', '$cardType', '$trxType', '$corpId',
 															'$status', '$month', '$respCode' ");
 
 			$res['success'] = true;
@@ -55,7 +55,7 @@ class summaryTransactionController extends Controller
 			$corpId = $request->corp_id_rc;
 			$month = $request->month_rc;
 
-			$data = DB::select("[spPortal_getSummaryResponseCodeData] '$bankCode', '$trxType', '$corpId', '$month' ");
+			$data = DB::select("[spVIDM_getSummaryResponseCodeData] '$bankCode', '$trxType', '$corpId', '$month' ");
 
 			$res['success'] = true;
 			$res['total'] = count($data);

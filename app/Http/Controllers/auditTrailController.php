@@ -25,7 +25,7 @@ class auditTrailController extends Controller
       $past = $request->past;
 
 
-      $data = DB::select("[spPortal_ViewAuditTrail] '$past', '$now' ");
+      $data = DB::select("[spVIDM_ViewAuditTrail] '$past', '$now' ");
 
       $res['success'] = true;
       $res['total'] = count($data);

@@ -94,7 +94,7 @@ class loginController extends Controller
         $user_data['total_not_active'] = $summary[0]['Total Not Active'];
         $user_data['total_active_transaction'] = $summary[0]['Total Active Transaction'];
 
-        $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '2', '$user_data[user_id]', '$user_data[username]', '$user_data[name]', $now, 'Login idm laravel'");
+        $audit_trail = DB::statement("[spVIDM_InsertAuditTrail] '2', '$user_data[user_id]', '$user_data[username]', '$user_data[name]', $now, 'Login idm laravel'");
 
 				$res['success'] = true;
 				$res['result'] = 'Login Success !';
@@ -123,7 +123,7 @@ class loginController extends Controller
     $username = $request->username;
     $name = $request->name;
 
-    $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '3', '$user_id' , '$username ', '$name', $now, 'Logout idm laravel'");
+    $audit_trail = DB::statement("[spVIDM_InsertAuditTrail] '3', '$user_id' , '$username ', '$name', $now, 'Logout idm laravel'");
 
     session()->flush();
     $set_token = DB::statement(" [spVIDM_setAPIToken] '$username', '' ");

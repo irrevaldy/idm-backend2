@@ -406,16 +406,16 @@ class edcDataController extends Controller
         }
         elseif(count($datas) > 0)
         {
-          $queryInsert = DB::statement("[spPortal_regisEdc] 'update', '$merchant', '$sn', '$midFull'");
+          $queryInsert = DB::statement("[spVIDM_regisEdc] 'update', '$merchant', '$sn', '$midFull'");
         }
         else
         {
-          $queryInsert = DB::statement("[spPortal_regisEdc] 'insert', '$merchant', '$sn', '$midFull'");
+          $queryInsert = DB::statement("[spVIDM_regisEdc] 'insert', '$merchant', '$sn', '$midFull'");
         }
         $res['success'] = true;
         $res['result'] = 'Add EDC Success';
 
-        $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '22', '$user_id', '$username', '$name', $now, 'Import SN, filename: $storage_path, merchant ID: $merchant'");
+        $audit_trail = DB::statement("[spVIDM_InsertAuditTrail] '22', '$user_id', '$username', '$name', $now, 'Import SN, filename: $storage_path, merchant ID: $merchant'");
 
         return response($res);
       }

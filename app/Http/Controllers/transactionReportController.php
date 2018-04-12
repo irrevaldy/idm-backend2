@@ -26,7 +26,7 @@ class transactionReportController extends Controller
     $username = $request->username;
     $name = $request->name;
 
-    $audit_trail = DB::statement("[spPortal_InsertAuditTrail] '6', '$user_id', '$username', '$name', $now, 'Generate Detail Report by Host Laravel'");
+    $audit_trail = DB::statement("[spVIDM_InsertAuditTrail] '6', '$user_id', '$username', '$name', $now, 'Generate Detail Report by Host Laravel'");
 
     $res['success'] = true;
     $res['result'] = 'Audit Trail success';
