@@ -15,8 +15,8 @@
 // Route::get('/menu/regular/{groupid}/{token}',['uses' => 'MenuController@getMenuRegular']);
 
 //menu
-Route::get('/menu/main/{group_id}/{api_token}',['uses' => 'MenuController@getMenuMain']);
-Route::get('/menu/regular/{group_id}/{api_token}',['uses' => 'MenuController@getMenuRegular']);
+Route::get('/menu/main/{group_id}/{user_id}/{api_token}',['uses' => 'MenuController@getMenuMain']);
+Route::get('/menu/regular/{group_id}/{user_id}/{api_token}',['uses' => 'MenuController@getMenuRegular']);
 
 
 /* Login & logout */

@@ -18,11 +18,11 @@ class MenuController extends Controller
 
   }
 
-  public function getMenuMain()
+  public function getMenuMain(Request $request, $group_id, $user_id)
   {
     try
     {
-			$data = DB::select("[spVIDM_SelectGroupMainMenu]");
+			$data = DB::select("[spVIDM_SelectPrivilegeGroupMainMenu] '$group_id', '$user_id'");
 
 			$data = json_encode($data);
 			$data = json_decode($data, true);
@@ -47,11 +47,11 @@ class MenuController extends Controller
 		}
   }
 
-  public function getMenuRegular()
+  public function getMenuRegular(Request $request, $group_id, $user_id)
   {
     try
     {
-			$data = DB::select("[spVIDM_SelectGroupRegularMenu]");
+			$data = DB::select("[spVIDM_SelectPrivilegeGroupRegularMenu] '$group_id', '$user_id'");
 
 			$data = json_encode($data);
 			$data = json_decode($data, true);
