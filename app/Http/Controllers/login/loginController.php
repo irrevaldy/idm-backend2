@@ -59,6 +59,35 @@ class loginController extends Controller
         $merch_id = $data[0]['merch_id'];
         $FID = $data[0]['FID'];
 
+        switch ($FID) {
+          case '2':
+            $imgName = "bank mandiri.png";
+            break;
+          case '3':
+            $imgName = "bni.png";
+            break;
+          case '6':
+            $imgName = "navbar_logo.png";
+            break;
+          case '7':
+            $imgName = "bri-logo.png";
+            break;
+          case '99':
+            $row_logo =  DB::select("[spVIDM_GetMerchantLogo] '$merch_id'");
+            $row_logo = json_encode($row_logo);
+            $row_logo = json_decode($row_logo, true);
+            $imgName = $row_logo['FMERCHLOGO'];
+
+            if($imgName == 'Default Logo') {
+              $imgName = 'logo.png';
+            }
+            break;
+          default:
+            $imgName = "logo.png";
+            break;
+        }
+        $user_data['logo'] = $imgName;
+
         $merchant_call = DB::select("[spVIDM_GetMerchant] '$merch_id'");
 
         $merchant_call = json_encode($merchant_call);

@@ -64,12 +64,22 @@ class MenuController extends Controller
 				// $user_data['isview'] = $data[0]['ISVIEW'];
 				// $user_data['iscreate'] = $data[0]['ISCREATE'];
 				// $user_data['isupdate'] = $data[0]['ISUPDATE'];
-      $user_data['result'] = $data[0]['RESULT'];
 
-				$res['success'] = true;
-				$res['result'] = $user_data['result'];
-				$res['data'] = $data;
+        $total = count($data);
+        if($total > 0)
+        {
+          $user_data['result'] = $data[0]['RESULT'];
 
+            $res['success'] = true;
+            $res['result'] = $user_data['result'];
+            $res['data'] = $data;
+        }
+        else
+        {
+          $res['success'] = false;
+          $res['result'] = 'no result';
+          $res['data'] = 'no data';
+        }
 
 			return response($res);
 		}
