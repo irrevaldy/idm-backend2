@@ -82,3 +82,5 @@ Route::post('/delete_groups', ['uses' =>'usersGroupsController@deleteGroups']);
 Route::post('/update_password', ['uses' =>'globalController@updatePassword']);
 
 Route::post('/audit_trail', ['uses' => 'auditTrailController@getAuditTrail']);
+
+Route::get('/monitoring_bar_chart', ['uses' => 'chartController@barChart']);

@@ -38,11 +38,11 @@ class loginController extends Controller
 				//session(['username' => $username], ['token' => $api_token]);
 				$set_token = DB::statement("[spVIDM_setAPIToken] '$username', '$api_token' ");
 
-        $date = '7';
+        $dateRange = '7';
         $merchant = $data[0]['merch_id'];
         $branch = $data[0]['branch_code'];
 
-        $summary = DB::select("[spVIDM_MonitoringSum] '$date', '$merchant', '$branch' ");
+        $summary = DB::select("[spVIDM_MonitoringSum] '$dateRange', '$merchant', '$branch' ");
 
         $summary = json_encode($summary);
         $summary = json_decode($summary, true);
