@@ -2,14 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
-use GuzzleHttp\Promise;
-use Session;
-use Exception;
+
 
 class chartController extends Controller
 {
