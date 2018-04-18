@@ -17,16 +17,12 @@ class chartController extends Controller
   {
     try
     {
-      $devlist = DB::table('TEDC_MERCHANT')
-           ->select(DB::raw('FMERCH_ID'), DB::raw("count(FMERCH_ID) as total"))
-           ->groupBy('FMERCH_ID')
-           ->get();
+      // $devlist = DB::table('TEDC_MERCHANT')
+      //       ->select(DB::raw('FMERCH_ID'), DB::raw("count(FMERCH_ID) as total"))
+      //       ->groupBy('FMERCH_ID')
+      //      ->get();
 
-      // $summary = json_encode($summary);
-      // $summary = json_decode($summary, true);
-      //
-			// $res['success'] = true;
-			// $res['data'] = $summary;
+       $devlist = DB::select("[spVIDM_GetCountEDC_FMERCHID]");
 
 			return response($devlist);
 		}
