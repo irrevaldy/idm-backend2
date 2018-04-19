@@ -38,7 +38,7 @@ class loginController extends Controller
 				//session(['username' => $username], ['token' => $api_token]);
 				$set_token = DB::statement("[spVIDM_setAPIToken] '$username', '$api_token' ");
 
-        $dateRange = '7';
+        $dateRange = '360';
         $merchant = $data[0]['merch_id'];
         $branch = $data[0]['branch_code'];
 
