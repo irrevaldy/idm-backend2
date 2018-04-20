@@ -40,6 +40,7 @@ Route::post('/policy_data', ['uses' => 'globalController@getPolicyData']);
 
 /* Search transaction */
 Route::post('/search_transaction', ['uses' => 'searchTransactionController@search']);
+Route::get('/search_transaction/line_data', ['uses' => 'searchTransactionController@getLineData']);
 
 /* Transaction Report */
 Route::post('transaction_report', ['uses' => 'transactionReportController@insertAuditTrail']);

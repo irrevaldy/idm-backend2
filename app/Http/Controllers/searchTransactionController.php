@@ -65,4 +65,26 @@ class searchTransactionController extends Controller
 
 	}
 
+  public function getLineData(Request $request)
+  {
+    try
+    {
+			$data = DB::select("[spVIDM_CountTotalTransaction]");
+
+      $data = json_encode($data);
+      $data = json_decode($data, true);
+
+      $res['success'] = true;
+      $res['result'] = $data;
+
+			return response($data);
+		}
+    catch(QueryException $ex)
+    {
+			$res['success'] = false;
+			$res['result'] = 'Query Exception.. Please Check Database!';
+
+			return response($res);
+		}
+  }
 }
