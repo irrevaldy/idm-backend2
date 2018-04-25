@@ -87,4 +87,27 @@ class searchTransactionController extends Controller
 			return response($res);
 		}
   }
+
+  public function getSeriesSeconds(Request $request)
+  {
+    try
+    {
+			$data = DB::select("[spVIDM_CountTotalTransactionSeconds]");
+
+      $data = json_encode($data);
+      $data = json_decode($data, true);
+
+      $res['success'] = true;
+      $res['result'] = $data;
+
+			return response($data);
+		}
+    catch(QueryException $ex)
+    {
+			$res['success'] = false;
+			$res['result'] = 'Query Exception.. Please Check Database!';
+
+			return response($res);
+		}
+  }
 }
