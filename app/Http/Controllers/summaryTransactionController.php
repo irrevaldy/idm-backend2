@@ -14,61 +14,64 @@ use Exception;
 class summaryTransactionController extends Controller
 {
    	public function __construct(Request $request){
-
+        
     }
-
+	
     public function summaryTransaction(Request $request) {
-
+		
 		try{
-
-			$bankCode = $request->bank_code;
-			$cardType = $request->card_type;
-			$trxType = $request->transaction_type;
-			$corpId = $request->corporate;
-			$status = $request->statusa;
-			$month = $request->month;
-			$respCode = $request->specifiedrc;
-
-			$data = DB::select("[spVIDM_GetSummaryTransactionData] '$bankCode', '$cardType', '$trxType', '$corpId',
-															'$status', '$month', '$respCode' ");
-
+			
+			$host = $request->host;
+			$card_type = $request->card_type;
+			$transaction_type = $request->transaction_type;
+			$corporate = $request->corporate;
+			$merchant = $request->merchant;
+			$status = $request->status;
+			$transaction_month = $request->transaction_month;
+			$response_code = $request->response_code;	
+			
+			$data = DB::select("[spDWH_summaryTransactionData] '$host', '$card_type', '$transaction_type', '$corporate',
+															'$merchant', '$status', '$transaction_month', '$response_code' ");
+															
 			$res['success'] = true;
 			$res['total'] = count($data);
 			$res['result'] = $data;
-
+	
 			return response($res);
-		} catch(QueryException $ex){
+		} catch(QueryException $ex){ 
 			$res['success'] = false;
 			$res['result'] = 'Query Exception.. Please Check Database!';
-
+	
 			return response($res);
 		}
-
+		
 	}
-
+	
 	public function summaryResponseCode(Request $request) {
-
+		
 		try{
-
-			$bankCode = $request->bank_code_rc;
-			$trxType = $request->trx_type_rc;
-			$corpId = $request->corp_id_rc;
-			$month = $request->month_rc;
-
-			$data = DB::select("[spVIDM_getSummaryResponseCodeData] '$bankCode', '$trxType', '$corpId', '$month' ");
-
+			
+			$host = $request->host;
+			$transaction_type = $request->transaction_type;
+			$corporate = $request->corporate;
+			$merchant = $request->merchant;
+			$transaction_month = $request->transaction_month;
+			
+			$data = DB::select("[spDWH_summaryResponseCodeData] '$host', '$transaction_type', '$corporate',
+															'$merchant', '$transaction_month' ");
+															
 			$res['success'] = true;
 			$res['total'] = count($data);
 			$res['result'] = $data;
-
+	
 			return response($res);
-		} catch(QueryException $ex){
+		} catch(QueryException $ex){ 
 			$res['success'] = false;
 			$res['result'] = 'Query Exception.. Please Check Database!';
-
+	
 			return response($res);
 		}
-
+		
 	}
-
+  
 }
