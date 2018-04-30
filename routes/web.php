@@ -40,6 +40,8 @@ Route::post('/policy_data', ['uses' => 'globalController@getPolicyData']);
 
 /* Search transaction */
 Route::post('/search_transaction', ['uses' => 'searchTransactionController@search']);
+Route::get('/search_transaction/line_data', ['uses' => 'searchTransactionController@getLineData']);
+Route::get('/search_transaction/series_seconds', ['uses' => 'searchTransactionController@getSeriesSeconds']);
 
 /* Transaction Report */
 Route::post('transaction_report', ['uses' => 'transactionReportController@insertAuditTrail']);
@@ -82,3 +84,7 @@ Route::post('/delete_groups', ['uses' =>'usersGroupsController@deleteGroups']);
 Route::post('/update_password', ['uses' =>'globalController@updatePassword']);
 
 Route::post('/audit_trail', ['uses' => 'auditTrailController@getAuditTrail']);
+
+Route::get('/monitoring_bar_chart', ['uses' => 'chartController@barChart']);
+
+Route::get('/test', ['uses' => 'testController@index']);

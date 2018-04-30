@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'sqlsrv'),
 
     /*
     |--------------------------------------------------------------------------
@@ -69,22 +69,11 @@ return [
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
-            'host' => env('DB_HOST', 'WDPVSPC0002\IRREVALDY'),
+            'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '1433'),
             'database' => env('DB_DATABASE', 'DbWDGatewayIDM'),
             'username' => env('DB_USERNAME', 'sa'),
             'password' => env('DB_PASSWORD', 'pvs1909~'),
-            'charset' => 'utf8',
-            'prefix' => '',
-        ],
-
-		'sqlsrv2' => [
-            'driver' => 'sqlsrv',
-            'host' => env('DB_HOST2', '127.0.0.1'),
-            'port' => env('DB_PORT2', '1433'),
-            'database' => env('DB_DATABASE2', 'Sales_Retail'),
-            'username' => env('DB_USERNAME2', 'sa'),
-            'password' => env('DB_PASSWORD2', 'pvs1909~'),
             'charset' => 'utf8',
             'prefix' => '',
         ],
