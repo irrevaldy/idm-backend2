@@ -76,7 +76,7 @@ class loginController extends Controller
             $row_logo =  DB::select("[spVIDM_GetMerchantLogo] '$merch_id'");
             $row_logo = json_encode($row_logo);
             $row_logo = json_decode($row_logo, true);
-            $imgName = $row_logo['FMERCHLOGO'];
+            $imgName = $row_logo[0]['FMERCHLOGO'];
 
             if($imgName == 'Default Logo') {
               $imgName = 'logo.png';
